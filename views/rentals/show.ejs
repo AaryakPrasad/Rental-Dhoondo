@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= foundRental.title %>
+    </title>
+</head>
+
+<body>
+    <h1>
+        <%= foundRental.title %>
+    </h1>
+    <h2>
+        <%= foundRental.location %>
+    </h2>
+    <div>
+        <form action="/rentals/<%= foundRental._id %>?_method=delete" method="post">
+            <button>Delete rental</button>
+        </form>
+    </div>
+    <footer>
+        <a href="/rentals">All rentals</a>
+        <a href="/rentals/<%= foundRental._id %>/edit">Edit rental</a>
+    </footer>
+</body>
+
+</html>

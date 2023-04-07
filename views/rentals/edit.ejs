@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit rental</title>
+</head>
+
+<body>
+    <form action="/rentals/<%= foundRental._id %>?_method=put" method="post">
+        <div>
+            <label for="title">Enter name of rental place:</label>
+            <input type="text" id="title" name="title" value="<%= foundRental.title %>">
+            <label for="location">Enter location of rental place:</label>
+            <input type="text" id="location" name="location" value="<%= foundRental.location %>">
+            <button>Update rental</button>
+        </div>
+        <a href="/rentals/<%= foundRental._id %>">Cancel</a>
+    </form>
+</body>
+
+</html>
