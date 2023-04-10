@@ -1,24 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout('layouts/boilerplate') %>
+    <div class="row">
+        <h1 class="text-center">Edit Rental:</h1>
+        <div class="col-6 offset-3">
+            <form action="/rentals/<%= foundRental._id %>?_method=put" method="post">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Enter name of rental place:</label>
+                    <input type="text" class="form-control" id="title" name="title" value="<%= foundRental.title %>">
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Enter price:</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">₹</span>
+                        <input type="text" id="price" name="price" placeholder="0" class="form-control"
+                            value="<%= foundRental.price %>" aria-label="Amount (to the nearest rupees)">
+                        <span class="input-group-text">.00</span>
+                    </div>
+                </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit rental</title>
-</head>
-
-<body>
-    <form action="/rentals/<%= foundRental._id %>?_method=put" method="post">
-        <div>
-            <label for="title">Enter name of rental place:</label>
-            <input type="text" id="title" name="title" value="<%= foundRental.title %>">
-            <label for="location">Enter location of rental place:</label>
-            <input type="text" id="location" name="location" value="<%= foundRental.location %>">
-            <button>Update rental</button>
+                <div class="mb-3">
+                    <label for="location" class="form-label">Enter location of rental place:</label>
+                    <input type="text" class="form-control" id="location" name="location"
+                        value="<%= foundRental.location %>">
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Enter image URL of rental place:</label>
+                    <input type="text" class="form-control" id="image" name="image" value="<%= foundRental.image %>">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Enter description of rental place:</label>
+                    <textarea class="form-control" id="description"
+                        name="description"><%= foundRental.description %></textarea>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-success">Edit rental</button>
+                </div>
+            </form>
+            <a href="/rentals" class="">Cancel</a>
         </div>
-        <a href="/rentals/<%= foundRental._id %>">Cancel</a>
-    </form>
-</body>
-
-</html>
+    </div>

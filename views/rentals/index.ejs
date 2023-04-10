@@ -1,29 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout('layouts/boilerplate') %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rentals</title>
-</head>
-
-<body>
-    <h1>All rentals</h1>
-    <div>
-        <a href="/rentals/new">Create new rental</a>
-    </div>
-    <div>
-        <ul>
+    <body>
+        <h1>All rentals</h1>
+        <div>
             <% for (let rental of rentals) {%>
-                <li>
-                    <a href="/rentals/<%= rental._id  %>">
-                        <%= rental.title %>
-                    </a>
-                </li>
+                <div class="card mb-3">
+                    <div class="row">
+                        <div class="col-md-4 ">
+                            <img class="img-fluid img-thumbnail" style="width: 100vh;height: 30vh;object-fit:cover;"
+                                src="<%= rental.image %>" alt="">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h3 class="card-title">
+                                    <%= rental.title %>
+                                </h3>
+                                <p class="card-text">
+                                    <%= rental.description %>
+                                </p>
+                                <h4 class="card-text text-muted">
+                                    <%= rental.location %>
+                                </h4>
+                                <a class="btn btn-primary" href="/rentals/<%= rental._id %>">View <%= rental.title %>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <% } %>
-        </ul>
-    </div>
-</body>
-
-</html>
+        </div>
