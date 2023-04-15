@@ -3,32 +3,39 @@
     <div class="row">
         <h1 class="text-center">New Rental:</h1>
         <div class="col-6 offset-3">
-            <form action="/rentals" method="post">
+            <form action="/rentals" method="post" novalidate class="validation">
                 <div class="mb-3">
                     <label for="title" class="form-label">Enter name of rental place:</label>
-                    <input type="text" class="form-control" id="title" name="title">
+                    <input type="text" class="form-control" id="title" name="rental[title]" required>
+                    <div class="valid-feedback">Looks good!</div>
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Enter price:</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text">₹</span>
-                        <input type="text" id="price" name="price" placeholder="0" class="form-control"
-                            aria-label="Amount (to the nearest rupees)">
+                        <input type="text" id="price" name="rental[price]" placeholder="0" class="form-control"
+                            aria-label="Amount (to the nearest rupees)" required>
                         <span class="input-group-text">.00</span>
+                        <div class="valid-feedback">Looks good!</div>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="location" class="form-label">Enter location of rental place:</label>
-                    <input type="text" class="form-control" id="location" name="location">
+                    <input type="text" class="form-control" id="location" name="rental[location]" required>
+                    <div class="valid-feedback">Looks good!</div>
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-label">Enter image URL of rental place:</label>
-                    <input type="text" class="form-control" id="image" name="image">
+                    <input type="text" class="form-control" id="image" name="rental[image]" required>
+                    <div class="valid-feedback">Looks good!</div>
+
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Enter description of rental place:</label>
-                    <textarea class="form-control" id="description" name="description"></textarea>
+                    <textarea class="form-control" id="description" name="rental[description]"></textarea>
+                    <div class="valid-feedback">Looks good!</div>
+
                 </div>
                 <div class="mb-3">
                     <button type="submit" class="btn btn-success">Add rental</button>
@@ -37,5 +44,4 @@
             <a href="/rentals" class="">Cancel</a>
         </div>
     </div>
-
     </body>
