@@ -4,10 +4,14 @@ const app = express()
 const path = require('path')
 const ejsMate = require('ejs-mate')
 const methodOverride = require('method-override')
-const Rental = require('./models/rentals')
-const catchAsync = require('./utils/catchAsync')
+const session = require('express-session')
+const flash = require('connect-flash')
+
 const ExpressError = require('./utils/ExpressError')
-const { rentalSchema } = require('./schemas')
+
+const rentals = require('./Routes/rentalRoutes')
+const reviews = require('./Routes/reviewRoutes')
+
 
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
@@ -15,6 +19,8 @@ app.engine('ejs', ejsMate)
 app.listen(3000, () => {
     console.log('Listening on port 3000.')
 })
+
+
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/Rental-dhundo')
         .then(() => {
@@ -24,59 +30,41 @@ async function main() {
             console.log('MongoDB connection error.')
         })
 } main();
+
+
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+app.use(express.static(path.join(__dirname, 'public')))
 
-const validateRental = (req, res, next) => {
 
-    if (!req.body.rental) { throw new ExpressError('Incomplete data', 400) }
-    const { error } = rentalSchema.validate(req.body)
-    if (error) {
-        console.log(error)
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    }
-    else {
-        next();
+const sessionConfig = {
+    secret: '***ChangeThisInProduction***',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + (1000 * 60 * 60 * 24 * 7),
+        maxAge: (1000 * 60 * 60 * 24 * 7) // 1 week in miliseconds
     }
 }
+app.use(session(sessionConfig))
+
+app.use(flash())
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success')
+    res.locals.error = req.flash('error')
+    next();
+})
 
 
 app.get('/', (req, res) => {
     res.render('home')
 })
-app.get('/rentals/new', (req, res) => {
-    res.render('rentals/new')
-})
-app.post('/rentals', validateRental, catchAsync(async (req, res, next) => {
-    const newRental = new Rental(req.body.rental)
-    await newRental.save()
-    res.redirect(`/rentals/${newRental._id}`)
-}))
-app.get('/rentals/:id/edit', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const foundRental = await Rental.findById(id)
-    res.render('rentals/edit', { foundRental })
-}))
-app.put('/rentals/:id', validateRental, catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await Rental.findByIdAndUpdate(id, req.body.rental, { runValidators: true })
-    res.redirect(`/rentals/${id}`)
-}))
-app.get('/rentals', catchAsync(async (req, res) => {
-    const rentals = await Rental.find({})
-    res.render('rentals/index', { rentals })
-}))
-app.get('/rentals/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const foundRental = await Rental.findById(id)
-    res.render('rentals/show', { foundRental })
-}))
-app.delete('/rentals/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const deletedRental = await Rental.findByIdAndDelete(id)
-    res.redirect('/rentals')
-}))
+
+app.use('/rentals', rentals)
+app.use('/rentals/:id/reviews', reviews)
+
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page not found', 404))
 })
