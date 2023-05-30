@@ -6,16 +6,32 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link active" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/rentals">Rentals</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/rentals/new">New Rental</a>
-                </li>
+                <% if(currentUser){ %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/rentals/new">New Rental</a>
+                    </li>
+                    <% } %>
+            </ul>
+            <ul class="navbar-nav">
+                <% if(!currentUser){ %>
+                    <li class="nav-item">
+                        <a class="btn btn-secondary" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li>
+                    <% }else{ %>
+                        <li class="nav-item me-auto">
+                            <a class="btn btn-dark " role="button" href="/logout">Logout</a>
+                        </li>
+                        <% } %>
             </ul>
         </div>
     </div>

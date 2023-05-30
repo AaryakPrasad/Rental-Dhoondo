@@ -15,59 +15,69 @@
                     <li class="list-group-item">
                         <%= foundRental.price %>/hour
                     </li>
-                    <li class="list-group-item text-muted">
+                    <li class="list-group-item">
                         <%= foundRental.location %>
                     </li>
+                    <li class="list-group-item text-muted">
+                        Created by: <%= foundRental.author.username %>
+                    </li>
                 </ul>
-                <div class="class-footer">
-                    <a class="btn btn-warning m-3" href="/rentals/<%= foundRental._id %>/edit">Edit rental</a>
+                <% if( currentUser && foundRental.author.equals(currentUser._id)) { %>
+                    <div class="class-footer">
+                        <a class="btn btn-warning m-3" href="/rentals/<%= foundRental._id %>/edit">Edit rental</a>
 
-                    <form class="d-inline" action="/rentals/<%= foundRental._id %>?_method=delete" method="post">
-                        <button class="btn btn-danger">Delete rental</button>
-                    </form>
-                </div>
+                        <form class="d-inline" action="/rentals/<%= foundRental._id %>?_method=delete" method="post">
+                            <button class="btn btn-danger">Delete rental</button>
+                        </form>
+                    </div>
+                    <% } %>
             </div>
         </div>
 
         <div class="m-3 col-6">
-            <div class="mb-3">
-                <h4 class="mb-3">Leave a review</h4>
-                <form action="/rentals/<%= foundRental._id %>/reviews" method="POST" class="validation" novalidate>
-                    <div class="mb-3">
-                        <label class="form-label" for="rating">Rating</label>
-                        <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
-                    </div>
-                    <div class="mb-3">
-                        <label for="body" class="form-label">Review:</label>
-                        <textarea class="form-control" name="review[body]" id="body" cols="20" rows="3"
-                            required></textarea>
-                        <div class="valid-feedback">Looks good!</div>
-                    </div>
-                    <button type="submit" class="btn btn-success">Submit</button>
-                </form>
-            </div>
-
-            <% for(let reviews of foundRental.reviews) {%>
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Rating:
-                            <%= reviews.rating %>
-                        </h5>
-                        <div class="card-text">
-                            <p>Review:
-                                <%= reviews.body %>
-                            </p>
+            <% if(currentUser){ %>
+                <div class="mb-3">
+                    <h4 class="mb-3">Leave a review</h4>
+                    <form action="/rentals/<%= foundRental._id %>/reviews" method="POST" class="validation" novalidate>
+                        <div class="mb-3">
+                            <label class="form-label" for="rating">Rating</label>
+                            <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
                         </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <form class="d-inline"
-                            action="/rentals/<%= foundRental._id %>/reviews/<%= reviews._id %>?_method=delete"
-                            method="post">
-                            <button class="btn btn-sm btn-danger">Delete review</button>
-                        </form>
-                    </div>
+                        <div class="mb-3">
+                            <label for="body" class="form-label">Review:</label>
+                            <textarea class="form-control" name="review[body]" id="body" cols="20" rows="3"
+                                required></textarea>
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </form>
                 </div>
                 <% } %>
+                    <% for(let reviews of foundRental.reviews) {%>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%= reviews.author.username %> wrote:
+                                </h5>
+                                <h6 class="card-subtitle mb-2 text-body-secondary">
+                                    Rating: <%= reviews.rating %>
+                                </h6>
+                                <div class="card-text">
+                                    <p>Review:
+                                        <%= reviews.body %>
+                                    </p>
+                                </div>
+                            </div>
+                            <% if(currentUser && reviews.author.equals(currentUser._id)){ %>
+                                <div class="card-footer">
+                                    <form class="d-inline"
+                                        action="/rentals/<%= foundRental._id %>/reviews/<%= reviews._id %>?_method=delete"
+                                        method="post">
+                                        <button class="btn btn-sm btn-danger">Delete review</button>
+                                    </form>
+                                </div>
+                                <% } %>
+                        </div>
+                        <% } %>
         </div>
     </div>
