@@ -1,8 +1,39 @@
 <% layout('layouts/boilerplate') %>
+    <link rel="stylesheet" href="/css/stars.css">
+
     <div class=" d-flex flex-row justify-content-evenly ">
         <div class="m-3 col-6">
+            <div id="carouselIndicators" class="carousel slide">
+                <% if(foundRental.images.length> 1) { %>
+                    <div class="carousel-indicators">
+                        <% foundRental.images.forEach((img,i)=> { %>
+                            <button type="button" class="<%= i===0 ? 'active': ''%>"
+                                data-bs-target="#carouselIndicators" data-bs-slide-to="<%= i %>"></button>
+                            <% }) %>
+                    </div>
+                    <% } %>
+                        <div class="carousel-inner">
+                            <% foundRental.images.forEach((img,i)=> {%>
+                                <div class="carousel-item  <%= i===0 ? 'active': ''%>">
+                                    <img src="<%= img.url  %>" class="d-block w-100"
+                                        data-bs-target="#carouselIndicators">
+                                </div>
+                                <% }) %>
+                        </div>
+                        <% if(foundRental.images.length> 1) { %>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                            <% } %>
+            </div>
             <div class="card w-100" style="width: 18rem;">
-                <img src="<%= foundRental.image %>" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">
                         <%= foundRental.title %>
@@ -39,12 +70,25 @@
                 <div class="mb-3">
                     <h4 class="mb-3">Leave a review</h4>
                     <form action="/rentals/<%= foundRental._id %>/reviews" method="POST" class="validation" novalidate>
-                        <div class="mb-3">
-                            <label class="form-label" for="rating">Rating</label>
-                            <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
+                        <div>
+                            <label class="form-label" for="rating">Rating: </label>
+                            <fieldset class="starability-checkmark">
+                                <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1"
+                                    checked aria-label="No rating." />
+                                <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                                <label for="first-rate1" title="Terrible">1 star</label>
+                                <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                                <label for="first-rate2" title="Not good">2 stars</label>
+                                <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                                <label for="first-rate3" title="Average">3 stars</label>
+                                <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                                <label for="first-rate4" title="Very good">4 stars</label>
+                                <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                                <label for="first-rate5" title="Amazing">5 stars</label>
+                            </fieldset>
                         </div>
                         <div class="mb-3">
-                            <label for="body" class="form-label">Review:</label>
+                            <label for="body" class="form-label">Write a review:</label>
                             <textarea class="form-control" name="review[body]" id="body" cols="20" rows="3"
                                 required></textarea>
                             <div class="valid-feedback">Looks good!</div>
@@ -56,16 +100,18 @@
                     <% for(let reviews of foundRental.reviews) {%>
                         <div class="card mb-3">
                             <div class="card-body">
-                                <h5 class="card-title">
-                                    <%= reviews.author.username %> wrote:
-                                </h5>
-                                <h6 class="card-subtitle mb-2 text-body-secondary">
-                                    Rating: <%= reviews.rating %>
-                                </h6>
-                                <div class="card-text">
-                                    <p>Review:
-                                        <%= reviews.body %>
+                                <div class="card-title">
+                                    <p class="starability-result" data-rating="<%= reviews.rating %>">
+                                        Rated: <%= reviews.rating %> stars
                                     </p>
+                                </div>
+                                <p class="card-subtitle">
+                                    By <%= reviews.author.username %>:
+                                </p>
+                                <div class="card-text">
+                                    <h6>
+                                        <%= reviews.body %>
+                                    </h6>
                                 </div>
                             </div>
                             <% if(currentUser && reviews.author.equals(currentUser._id)){ %>

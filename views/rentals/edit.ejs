@@ -2,7 +2,8 @@
     <div class="row">
         <h1 class="text-center">Edit Rental:</h1>
         <div class="col-6 offset-3">
-            <form action="/rentals/<%= foundRental._id %>?_method=put" method="post" novalidate class="validation">
+            <form action="/rentals/<%= foundRental._id %>?_method=put" method="post" novalidate class="validation"
+                enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" class="form-label">Enter name of rental place:</label>
                     <input type="text" class="form-control" id="title" name="rental[title]"
@@ -30,11 +31,8 @@
 
                 </div>
                 <div class="mb-3">
-                    <label for="image" class="form-label">Enter image URL of rental place:</label>
-                    <input type="text" class="form-control" id="image" name="rental[image]"
-                        value="<%= foundRental.image %>" required>
-                    <div class="valid-feedback">Looks good!</div>
-
+                    <label for="img" class="form-label">Add more images(upto total 5):</label>
+                    <input class="form-control" type="file" name="image" id="img" multiple>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label" required>
@@ -44,9 +42,21 @@
                     <textarea class="form-control" id="description"
                         name="rental[description]"><%= foundRental.description %></textarea>
                 </div>
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-success">Edit rental</button>
-                </div>
+                <p class="mb-3">Delete images:</p>
+                <% foundRental.images.forEach(function(img,i){ %>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <label class="form-check-label" for="image-<%= i %>"><img src="<%= img.thumbnail%>"
+                                    class="img-thumbnail"></img></label>
+                            <input class="form-check-input" type="checkbox" name="deleteImages[]"
+                                value="<%= img.filename %>" id="image-<%= i %>">
+                        </div>
+                    </div>
+                    <% }) %>
+
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-success">Edit rental</button>
+                        </div>
             </form>
             <a href="/rentals" class="">Cancel</a>
         </div>

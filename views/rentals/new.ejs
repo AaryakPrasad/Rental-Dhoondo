@@ -3,7 +3,7 @@
     <div class="row">
         <h1 class="text-center">New Rental:</h1>
         <div class="col-6 offset-3">
-            <form action="/rentals" method="post" novalidate class="validation">
+            <form action="/rentals" method="post" novalidate class="validation" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" class="form-label">Enter name of rental place:</label>
                     <input type="text" class="form-control" id="title" name="rental[title]" required>
@@ -26,10 +26,8 @@
                     <div class="valid-feedback">Looks good!</div>
                 </div>
                 <div class="mb-3">
-                    <label for="image" class="form-label">Enter image URL of rental place:</label>
-                    <input type="text" class="form-control" id="image" name="rental[image]" required>
-                    <div class="valid-feedback">Looks good!</div>
-
+                    <label for="img" class="form-label">Add images(upto 5):</label>
+                    <input class="form-control" type="file" name="image" id="img" multiple>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Enter description of rental place:</label>
