@@ -1,9 +1,13 @@
 <% layout('layouts/boilerplate') %>
     <link rel="stylesheet" href="/css/stars.css">
-
-    <div class=" d-flex flex-row justify-content-evenly ">
-        <div class="m-3 col-6">
-            <div id="carouselIndicators" class="carousel slide">
+    <script>
+        const place_id = "<%= foundRental.location_place_id %>";
+        console.log(place_id);
+    </script>
+    <div class="d-md-flex flex-md-row justify-content-md-evenly ">
+        <div class="m-3 col-md-6">
+            <div id="carouselIndicators" class="carousel slide"
+                style="height:  <% if(foundRental.images.length> 1) { %>400px; <% }else{ %>0px <% } %>">
                 <% if(foundRental.images.length> 1) { %>
                     <div class="carousel-indicators">
                         <% foundRental.images.forEach((img,i)=> { %>
@@ -47,7 +51,7 @@
                         <%= foundRental.price %>/hour
                     </li>
                     <li class="list-group-item">
-                        <%= foundRental.location %>
+                        <%= foundRental.location_name %>
                     </li>
                     <li class="list-group-item text-muted">
                         Created by: <%= foundRental.author.username %>
@@ -65,7 +69,9 @@
             </div>
         </div>
 
-        <div class="m-3 col-6">
+        <div class="m-3 col-md-6">
+            <div id="map" class="mb-3" style="height: 400px; width: 1 rem;"></div>
+
             <% if(currentUser){ %>
                 <div class="mb-3">
                     <h4 class="mb-3">Leave a review</h4>
@@ -127,3 +133,7 @@
                         <% } %>
         </div>
     </div>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzWCe6VPjLDaeIe29GCI0xx2M1KZ_72Ls&callback=initMap&libraries=places&v=weekly"
+        defer></script>
+    <script src="/js/showPageMap.js"></script>

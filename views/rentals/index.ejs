@@ -7,20 +7,24 @@
                 <div class="card mb-3">
                     <div class="row">
                         <div class="col-md-4 ">
-                            <img class="img-fluid img-thumbnail" style="width: 100vh;height: 30vh;object-fit:cover;"
-                                src="<%= rental.images[0].thumbnail %>" alt="">
+                            <% if(rental.images.length) { %>
+                                <img class="img-fluid img-thumbnail" style="width: 100vh;height: 30vh;object-fit:cover;"
+                                    src="<%= rental.images[0].thumbnail %>" alt="">
+                                <% }else{ %>
+                                    <img class="img-fluid img-thumbnail"
+                                        style="width: 100vh;height: 30vh;object-fit:cover;"
+                                        src="https://res.cloudinary.com/dklksojcs/image/upload/w_300/v1685559557/Rental-Dhoondo/eki5ixcziefy5hfe9daj.jpg"
+                                        alt="">
+                                    <% } %>
                         </div>
                         <div class="col-md-8">
-                            <div class="card-body">
+                            <div class="card-body ">
                                 <h3 class="card-title">
                                     <%= rental.title %>
                                 </h3>
-                                <p class="card-text">
-                                    <%= rental.description %>
-                                </p>
-                                <h4 class="card-text text-muted">
-                                    <%= rental.location %>
-                                </h4>
+                                <h5 class="card-text text-muted">
+                                    <%= rental.location_name %>
+                                </h5>
                                 <a class="btn btn-primary" href="/rentals/<%= rental._id %>">View <%= rental.title %>
                                 </a>
                             </div>

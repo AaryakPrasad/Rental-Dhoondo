@@ -2,15 +2,15 @@
 
     <div class="row">
         <h1 class="text-center">New Rental:</h1>
-        <div class="col-6 offset-3">
+        <div class="col-md-6 offset-md-3">
             <form action="/rentals" method="post" novalidate class="validation" enctype="multipart/form-data">
                 <div class="mb-3">
-                    <label for="title" class="form-label">Enter name of rental place:</label>
+                    <label for="title" class="form-label">Enter name of rental vehicle:</label>
                     <input type="text" class="form-control" id="title" name="rental[title]" required>
                     <div class="valid-feedback">Looks good!</div>
                 </div>
                 <div class="mb-3">
-                    <label for="price" class="form-label">Enter price:</label>
+                    <label for="price" class="form-label">Enter price per hour:</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text">₹</span>
                         <input type="text" id="price" name="rental[price]" placeholder="0" class="form-control"
@@ -21,16 +21,19 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="location" class="form-label">Enter location of rental place:</label>
-                    <input type="text" class="form-control" id="location" name="rental[location]" required>
+                    <label for="location" class="form-label">Enter location of rental place (as found on
+                        Google):</label>
+                    <input type="text" class="form-control" id="location" name="rental[location_name]" required>
                     <div class="valid-feedback">Looks good!</div>
+                    <input type="text" name="rental[location_place_id]" id="place_id" hidden>
                 </div>
                 <div class="mb-3">
                     <label for="img" class="form-label">Add images(upto 5):</label>
                     <input class="form-control" type="file" name="image" id="img" multiple>
                 </div>
                 <div class="mb-3">
-                    <label for="description" class="form-label">Enter description of rental place:</label>
+                    <label for="description" class="form-label">Enter description of
+                        rental place (Suggestions, Staff behaviour, How to reach etc.):</label>
                     <textarea class="form-control" id="description" name="rental[description]"></textarea>
                     <div class="valid-feedback">Looks good!</div>
 
@@ -42,4 +45,37 @@
             <a href="/rentals" class="">Cancel</a>
         </div>
     </div>
-    </body>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzWCe6VPjLDaeIe29GCI0xx2M1KZ_72Ls&libraries=places&callback=initAutocomplete"
+        async defer></script>
+
+    <script type="text/javascript">
+
+        function initAutocomplete() {
+            // Create the autocomplete object, restricting the search to geographical
+            // location types.
+            autocomplete = new google.maps.places.Autocomplete(
+             /** @type {!HTMLInputElement} */(document.getElementById('location')),
+                {
+                    types: ['establishment'],
+                    componentRestrictions: { country: ["in"] },
+                    fields: ['place_id', 'geometry', 'name', 'formatted_address']
+                });
+
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            autocomplete.addListener('place_changed', fillInAddress);
+        }
+
+        function fillInAddress() {
+            // Get the place details from the autocomplete object.
+            var place = autocomplete.getPlace();
+            console.log(place);
+            if (!place.geometry) {
+                document.getElementById('location').placeholder = "Enter a location";
+            } else {
+                document.getElementById('location').value = place.name + ", " + place.formatted_address;
+                document.getElementById('place_id').value = place.place_id;
+            }
+        }
+    </script>

@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %>
     <div class="row">
         <h1 class="text-center">Edit Rental:</h1>
-        <div class="col-6 offset-3">
+        <div class="col-md-6 offset-md-3">
             <form action="/rentals/<%= foundRental._id %>?_method=put" method="post" novalidate class="validation"
                 enctype="multipart/form-data">
                 <div class="mb-3">
@@ -24,10 +24,13 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="location" class="form-label">Enter location of rental place:</label>
-                    <input type="text" class="form-control" id="location" name="rental[location]"
-                        value="<%= foundRental.location %>" required>
+                    <label for="location" class="form-label">Enter location of rental place (as found on
+                        Google):</label>
+                    <input type="text" class="form-control" id="location" name="rental[location_name]"
+                        value="<%= foundRental.location_name %>" required>
                     <div class="valid-feedback">Looks good!</div>
+                    <input type="text" name="rental[location_place_id]" value="<%= foundRental.location_place_id %>"
+                        id="place_id" hidden>
 
                 </div>
                 <div class="mb-3">
@@ -61,3 +64,37 @@
             <a href="/rentals" class="">Cancel</a>
         </div>
     </div>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzWCe6VPjLDaeIe29GCI0xx2M1KZ_72Ls&libraries=places&callback=initAutocomplete"
+        async defer></script>
+
+    <script type="text/javascript">
+
+        function initAutocomplete() {
+            // Create the autocomplete object, restricting the search to geographical
+            // location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                 /** @type {!HTMLInputElement} */(document.getElementById('location')),
+                {
+                    types: ['establishment'],
+                    componentRestrictions: { country: ["in"] },
+                    fields: ['place_id', 'geometry', 'name', 'formatted_address']
+                });
+
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            autocomplete.addListener('place_changed', fillInAddress);
+        }
+
+        function fillInAddress() {
+            // Get the place details from the autocomplete object.
+            var place = autocomplete.getPlace();
+            console.log(place);
+            if (!place.geometry) {
+                document.getElementById('location').placeholder = "Enter a location";
+            } else {
+                document.getElementById('location').value = place.name + ", " + place.formatted_address;
+                document.getElementById('place_id').value = place.place_id;
+            }
+        }
+    </script>

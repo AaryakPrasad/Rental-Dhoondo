@@ -16,7 +16,8 @@ const RentalSchema = new Schema({
     price: Number,
     images: [ImageSchema],
     description: String,
-    location: String,
+    location_name: String,
+    location_place_id: String,
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User'

@@ -42,7 +42,7 @@ const logoutUser = (req, res, next) => {
             return next(err);
         }
         req.flash('success', 'Successfully logged you out!')
-        res.redirect('/rentals')
+        res.redirect('/')
     });
 }
 

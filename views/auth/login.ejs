@@ -1,21 +1,34 @@
 <% layout('layouts/boilerplate') %>
-    <h1>Login!</h1>
-    <form action="/login" method="POST" class="validation" novalidate>
-        <div class="mb-3">
-            <label class="form-label" for="username">Enter your username:</label>
-            <input class="form-control" type="text" id="username" name="username" required>
-            <div class="valid-feedback">
-                Looks good!
+    <div class="container d-flex justify-content-center align-items-center mt-5">
+        <div class="row flex-fill">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Login!</h4>
+                        <form action="/login" method="POST" class="validation" novalidate>
+                            <div class="mb-3">
+                                <label class="form-label" for="username">Enter your username:</label>
+                                <input class="form-control" type="text" id="username" name="username" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="password">Enter your password:</label>
+                                <input class="form-control" type="password" id="password" name="password" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="mb-3 d-grid gap-2">
+                                <button class="btn btn-success">Login</button>
+                            </div>
+                            <div class="card-text text-center">
+                                <p>Not a user? <a href="/register">Register</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="mb-3">
-            <label class="form-label" for="password">Enter your password:</label>
-            <input class="form-control" type="password" id="password" name="password" required>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-        </div>
-        <div class="mb-3">
-            <button class="btn btn-success">Login</button>
-        </div>
-    </form>
+    </div>

@@ -34,9 +34,8 @@ const createRental = async (req, res, next) => {
     }
     newRental.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
     await newRental.save()
-    console.log(newRental)
     req.flash('success', 'Successfully created new rental vehicle')
-    res.redirect(`/rentals/${newRental._id}`)
+    return res.redirect(`/rentals/${newRental._id}`)
 }
 
 const renderEditRental = async (req, res) => {
@@ -51,25 +50,23 @@ const renderEditRental = async (req, res) => {
 
 const updateRental = async (req, res) => {
     const { id } = req.params;
-    const foundRental = await Rental.findById(id)
+    const foundRental = await Rental.findByIdAndUpdate(id, { ...req.body.rental })
     const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }))
     foundRental.images.push(...imgs)
+    await foundRental.save()
     if (foundRental.images.length > 5) {
         req.flash('error', 'You can only upload 5 images max')
         return res.redirect(`/rentals/${id}/edit`)
     }
-    await foundRental.updateOne(id, req.body.rental)
     if (req.body.deleteImages) {
         for (let filename of req.body.deleteImages) {
             await cloudinary.uploader.destroy(filename)
         }
         await foundRental.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
     }
-    await foundRental.save()
-    console.log(foundRental)
 
     req.flash('success', 'Successfully updated rental details')
-    res.redirect(`/rentals/${id}`)
+    return res.redirect(`/rentals/${id}`)
 }
 
 const deleteRental = async (req, res) => {
