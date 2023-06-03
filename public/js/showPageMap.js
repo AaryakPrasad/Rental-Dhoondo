@@ -18,7 +18,6 @@ function initMap() {
             place.geometry &&
             place.geometry.location
         ) {
-            console.log(place)
             map.setCenter(place.geometry.location);
             const marker = new google.maps.Marker({
                 map,
