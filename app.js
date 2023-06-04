@@ -19,7 +19,8 @@ const reviewRoutes = require('./routes/reviewRoutes')
 const userRoutes = require('./routes/authRoutes')
 const helmet = require('helmet')
 const MongoStore = require('connect-mongo')
-const dbURl = 'mongodb://127.0.0.1:27017/Rental-dhundo'
+const dbURl = process.env.DB_URL
+const secret = process.env.SESSION_SECRET
 
 mongoose.set('strictQuery', false);
 
@@ -51,7 +52,7 @@ const store = MongoStore.create({
     mongoUrl: dbURl,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: '***ChangeThisInProduction***'
+        secret
     }
 });
 
@@ -63,7 +64,7 @@ store.on("error", function (e) {
 const sessionConfig = {
     store,
     name: 'session',
-    secret: '***ChangeThisInProduction***',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
