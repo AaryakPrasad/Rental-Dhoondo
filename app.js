@@ -17,6 +17,9 @@ const User = require('./models/user')
 const rentalRoutes = require('./routes/rentalRoutes')
 const reviewRoutes = require('./routes/reviewRoutes')
 const userRoutes = require('./routes/authRoutes')
+const helmet = require('helmet')
+const MongoStore = require('connect-mongo')
+const dbURl = 'mongodb://127.0.0.1:27017/Rental-dhundo'
 
 mongoose.set('strictQuery', false);
 
@@ -27,9 +30,8 @@ app.listen(3000, () => {
     console.log('Listening on port 3000.')
 })
 
-
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/Rental-dhundo')
+    await mongoose.connect(dbURl)
         .then(() => {
             console.log("Connected to Mongodb!")
         })
@@ -43,13 +45,30 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.use(helmet({ contentSecurityPolicy: false }))
+
+const store = MongoStore.create({
+    mongoUrl: dbURl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: '***ChangeThisInProduction***'
+    }
+});
+
+store.on("error", function (e) {
+    console.log("SESSION STORE ERROR", e)
+})
+
 
 const sessionConfig = {
+    store,
+    name: 'session',
     secret: '***ChangeThisInProduction***',
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        secure: false,
         expires: Date.now() + (1000 * 60 * 60 * 24 * 7),
         maxAge: (1000 * 60 * 60 * 24 * 7) // 1 week in miliseconds
     }
