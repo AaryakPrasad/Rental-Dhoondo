@@ -7,26 +7,26 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item">
+                <li class="nav-item my-sm-1 my-0 mx-3 mx-lg-0">
                     <a class="nav-link" href="/rentals">Rentals</a>
                 </li>
                 <% if(currentUser){ %>
-                    <li class="nav-item">
+                    <li class="nav-item my-sm-1 mx-3 mx-lg-0">
                         <a class="nav-link" href="/rentals/new">New Rental</a>
                     </li>
                     <% } %>
             </ul>
             <ul class="navbar-nav">
                 <% if(!currentUser){ %>
-                    <li class="nav-item">
-                        <a class="btn btn-secondary mx-3" href="/login">Login</a>
+                    <li class="nav-item my-2 my-lg-1 mx-3 mx-lg-0">
+                        <a class="btn btn-secondary me-3 " href="/login">Login</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item mx-3 mx-lg-0 my-1">
                         <a class="btn btn-outline-light" href="/register">Register</a>
                     </li>
                     <% }else{ %>
-                        <li class="nav-item me-auto">
-                            <a class="btn btn-dark " role="button" href="/logout">Logout</a>
+                        <li class="nav-item me-auto mx-3 mx-lg-0 my-1">
+                            <a class="btn btn-dark" role="button" href="/logout">Logout</a>
                         </li>
                         <% } %>
             </ul>

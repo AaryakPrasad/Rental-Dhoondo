@@ -17,6 +17,7 @@ const User = require('./models/user')
 const rentalRoutes = require('./routes/rentalRoutes')
 const reviewRoutes = require('./routes/reviewRoutes')
 const userRoutes = require('./routes/authRoutes')
+const helmet = require('helmet')
 
 mongoose.set('strictQuery', false);
 
@@ -42,14 +43,16 @@ async function main() {
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
-
+app.use(helmet({ contentSecurityPolicy: false }))
 
 const sessionConfig = {
+    name: 'session',
     secret: '***ChangeThisInProduction***',
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        secure: false,
         expires: Date.now() + (1000 * 60 * 60 * 24 * 7),
         maxAge: (1000 * 60 * 60 * 24 * 7) // 1 week in miliseconds
     }
