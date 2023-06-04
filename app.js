@@ -21,6 +21,8 @@ const helmet = require('helmet')
 const MongoStore = require('connect-mongo')
 const dbURl = 'mongodb://127.0.0.1:27017/Rental-dhundo'
 
+const secret = process.env.SESSION_SECRET
+
 mongoose.set('strictQuery', false);
 
 app.set('views', path.join(__dirname, 'views'))
@@ -51,7 +53,7 @@ const store = MongoStore.create({
     mongoUrl: dbURl,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: '***ChangeThisInProduction***'
+        secret
     }
 });
 
@@ -63,7 +65,7 @@ store.on("error", function (e) {
 const sessionConfig = {
     store,
     name: 'session',
-    secret: '***ChangeThisInProduction***',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
