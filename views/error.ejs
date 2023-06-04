@@ -1,11 +1,11 @@
 <% layout('layouts/boilerplate') %>
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-md-6 offset-md-3 card">
             <div class="alert alert-danger" role="alert">
-                <h4 class="alert-heading">
+                <h4 class="alert-heading card-title">
                     <%= err.message %>
                 </h4>
-                <p>
+                <p class="card-text">
                     <%= err.stack %>
                 </p>
                 <hr>

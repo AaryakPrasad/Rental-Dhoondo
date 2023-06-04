@@ -28,9 +28,9 @@ module.exports.rentalSchema = joi.object({
     rental: joi.object({
         price: joi.number().required().min(0),
         title: joi.string().required().escapeHTML(),
+        description: joi.string().allow('', null).escapeHTML(),
         location_name: joi.string().required().escapeHTML(),
-        location_place_id: joi.string().required().escapeHTML(),
-        description: joi.string().escapeHTML()
+        location_place_id: joi.string().required().escapeHTML()
     }).required(),
     deleteImages: joi.array()
 })
