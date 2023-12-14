@@ -22,8 +22,6 @@ const MongoStore = require('connect-mongo')
 const dbURl = process.env.DB_URL
 const secret = process.env.SESSION_SECRET
 
-const secret = process.env.SESSION_SECRET
-
 mongoose.set('strictQuery', false);
 
 app.set('views', path.join(__dirname, 'views'))
