@@ -5,8 +5,12 @@
     </script>
     <div class="d-md-flex flex-md-row justify-content-md-evenly ">
         <div class="m-3 col-md-6">
-            <div id="carouselIndicators" class="carousel slide"
-                style="height:  <% if(foundRental.images.length> 1) { %>400px; <% }else{ %>0px <% } %>">
+            <div id="carouselIndicators" class="carousel slide" style="height: 
+                <% if(foundRental.images.length> 0) { %> 
+                    400px; 
+                <% }else{ %>
+                    0px 
+                <% } %>">
                 <% if(foundRental.images.length> 1) { %>
                     <div class="carousel-indicators">
                         <% foundRental.images.forEach((img,i)=> { %>
