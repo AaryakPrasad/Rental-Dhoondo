@@ -52,12 +52,11 @@ To run this project locally, follow these steps:
    ```bash
    mongosh
    
-   ```bash
    mongod
    
 2. Run the application:
    
    ```bash
-   node app.js
+   nodemon app.js
    
 3. Open your browser and visit http://localhost:3000/ to access Rental Dhoondo locally.
